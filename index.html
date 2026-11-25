@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Badminton Tournament Registration</title>
+    <meta name="theme-color" content="#102e28">
+    <meta name="description" content="Train, play and grow with Aurafit Badminton Academy. Contact Arif or Krishna for enquiries and payments.">
+    <title>Aurafit Badminton Academy</title>
     <style>
         :root {
             color-scheme: light;
             font-family: Arial, sans-serif;
-            color: #17231c;
-            background: #f2f7f2;
+            color: #182b26;
+            background: #f3f6ef;
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
         }
 
         * {
@@ -18,62 +22,320 @@
 
         body {
             margin: 0;
-            padding: 32px 16px;
+            padding: 28px 18px 48px;
+            background: radial-gradient(circle at 90% 8%, #e1edbd 0, transparent 26%), #f3f6ef;
         }
 
         main {
-            max-width: 720px;
+            width: min(100%, 1040px);
             margin: 0 auto;
-            padding: 28px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 18px rgba(20, 50, 30, 0.1);
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(32px, 7vw, 72px);
+            color: #fff;
+            background: linear-gradient(125deg, #102e28 0%, #174e3c 68%, #26704b 100%);
+            border-radius: 26px;
+            box-shadow: 0 22px 55px rgba(20, 57, 42, 0.2);
+        }
+
+        .hero::after {
+            position: absolute;
+            right: -80px;
+            bottom: -180px;
+            width: 430px;
+            height: 430px;
+            border: 1px solid rgba(226, 242, 154, 0.2);
+            border-radius: 50%;
+            box-shadow: 0 0 0 38px rgba(226, 242, 154, 0.05), 0 0 0 82px rgba(226, 242, 154, 0.04);
+            content: "";
+        }
+
+        .eyebrow {
+            margin: 0 0 16px;
+            color: #d7ed87;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
         }
 
         h1 {
-            margin-top: 0;
-            color: #176b3a;
+            max-width: 680px;
+            margin: 0;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            letter-spacing: -0.055em;
+            line-height: 0.98;
+        }
+
+        .hero-copy {
+            max-width: 510px;
+            margin: 22px 0 0;
+            color: #d9e8dc;
+            font-size: clamp(1rem, 2vw, 1.18rem);
+            line-height: 1.65;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-top: 30px;
+            padding: 10px 15px;
+            color: #18372a;
+            background: #d7ed87;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .hero-tag::before {
+            width: 8px;
+            height: 8px;
+            background: #26704b;
+            border-radius: 50%;
+            content: "";
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin: 22px 0;
+        }
+
+        .info-card,
+        .registration-card {
+            padding: clamp(22px, 4vw, 34px);
+            background: #fff;
+            border: 1px solid #e5e9dd;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(27, 55, 39, 0.06);
+        }
+
+        .info-card h2,
+        .registration-card h2 {
+            margin: 0;
+            color: #173c2d;
+            font-size: 1.45rem;
+            letter-spacing: -0.03em;
+        }
+
+        .card-intro {
+            margin: 9px 0 22px;
+            color: #67766c;
+            line-height: 1.5;
+        }
+
+        .contact-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 15px 16px;
+            color: #18372a;
+            background: #f5f8f0;
+            border: 1px solid #e8eee0;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: border-color 150ms ease, transform 150ms ease;
+        }
+
+        .contact-link:hover {
+            transform: translateY(-2px);
+            border-color: #9dbb68;
+        }
+
+        .contact-name {
+            font-weight: 800;
+        }
+
+        .contact-number {
+            color: #42634c;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        .payment-note {
+            margin: 0 0 16px;
+            padding: 15px 16px;
+            color: #31523a;
+            background: #f4f7e8;
+            border-left: 3px solid #a6c85b;
+            border-radius: 4px 10px 10px 4px;
+            line-height: 1.55;
+        }
+
+        .payment-note strong {
+            color: #18372a;
+        }
+
+        .upcoming-events {
+            margin-top: 22px;
+        }
+
+        .upcoming-events > h2 {
+            margin: 0 0 14px;
+            color: #173c2d;
+            font-size: 1.5rem;
+        }
+
+        .events-list {
+            margin: 0 0 18px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .event-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 22px;
+            color: #18372a;
+            background: #fff;
+            border: 1px solid #e5e9dd;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(27, 55, 39, 0.05);
+            text-decoration: none;
+        }
+
+        .event-link:hover {
+            border-color: #9dbb68;
+        }
+
+        .event-link strong {
+            font-size: 1.05rem;
+        }
+
+        .event-action {
+            color: #42634c;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .registration-card {
+            padding: clamp(24px, 5vw, 40px);
+        }
+
+        .registration-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 26px;
+        }
+
+        .registration-heading p {
+            max-width: 420px;
+            margin: 0;
+            color: #67766c;
+            line-height: 1.5;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin: 0 0 24px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e8eee5;
+        }
+
+        .tab-button {
+            padding: 10px 16px;
+            color: #52675a;
+            background: transparent;
+            border: 0;
+            border-radius: 9px;
+        }
+
+        .tab-button[aria-selected="true"] {
+            color: #173324;
+            background: #eaf2d5;
+        }
+
+        .tab-panel[hidden] {
+            display: none;
+        }
+
+        .panel-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 14px;
         }
 
         form {
             display: grid;
-            gap: 16px;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+            gap: 14px;
             align-items: end;
         }
 
         label {
             display: grid;
-            gap: 6px;
-            font-weight: 600;
+            gap: 8px;
+            color: #354c3c;
+            font-size: 0.9rem;
+            font-weight: 700;
         }
 
         input,
         select,
         button {
-            min-height: 42px;
-            padding: 9px 10px;
-            border: 1px solid #b8c8bc;
-            border-radius: 6px;
+            min-height: 48px;
+            padding: 11px 13px;
+            border: 1px solid #d5dfd2;
+            border-radius: 10px;
             font: inherit;
         }
 
+        input,
+        select {
+            width: 100%;
+            color: #182b26;
+            background: #fbfcf9;
+        }
+
+        input:focus,
+        select:focus,
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #b8d76c;
+            outline-offset: 3px;
+        }
+
         button {
+            padding-inline: 20px;
             border: 0;
-            color: #fff;
-            background: #176b3a;
-            font-weight: 700;
+            color: #173324;
+            background: #d7ed87;
+            font-weight: 800;
             cursor: pointer;
+            transition: background 150ms ease;
         }
 
         button:hover {
-            background: #10552d;
+            background: #c8e36a;
         }
 
         #status {
             min-height: 1.5em;
-            margin: 14px 0;
-            color: #176b3a;
+            margin: 12px 0 20px;
+            color: #26704b;
+        }
+
+        .players-heading {
+            margin: 26px 0 10px;
+            color: #173c2d;
+            font-size: 1.15rem;
         }
 
         .table-wrap {
@@ -88,130 +350,113 @@
 
         th,
         td {
-            padding: 11px 8px;
-            border-bottom: 1px solid #e1e9e2;
+            padding: 13px 10px;
+            border-bottom: 1px solid #e8eee5;
         }
 
         th {
-            color: #176b3a;
+            color: #42634c;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        footer {
+            padding: 24px 12px 0;
+            color: #68776a;
+            font-size: 0.88rem;
+            text-align: center;
+        }
+
+        @media (max-width: 760px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            form {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            form button {
+                grid-column: 1 / -1;
+            }
+
+            .registration-heading {
+                align-items: start;
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 480px) {
-            main {
-                padding: 20px 16px;
+            body {
+                padding: 14px 12px 30px;
+            }
+
+            .hero {
+                border-radius: 20px;
+            }
+
+            .contact-link {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            form button {
+                grid-column: auto;
             }
         }
     </style>
 </head>
 <body>
     <main>
-        <h1>Badminton Tournament Registration</h1>
-        <p>Register a player by entering their name, age, and tournament category.</p>
+        <header class="hero">
+            <p class="eyebrow">Train · Play · Grow</p>
+            <h1>Aurafit Badminton Academy</h1>
+            <p class="hero-copy">Build your skills, confidence and love for the game. Get in touch with our team for academy enquiries and payments.</p>
+            <span class="hero-tag">Your game starts here</span>
+        </header>
 
-        <form id="registration-form">
-            <label for="player-name">
-                Name
-                <input id="player-name" name="name" type="text" maxlength="80" autocomplete="name" required>
-            </label>
-            <label for="player-age">
-                Age
-                <input id="player-age" name="age" type="number" min="5" max="100" required>
-            </label>
-            <label for="player-category">
-                Category
-                <select id="player-category" name="category" required>
-                    <option value="" disabled selected>Select category</option>
-                    <option value="Under 12">Under 12</option>
-                    <option value="Under 15">Under 15</option>
-                    <option value="Under 18">Under 18</option>
-                    <option value="Open">Open</option>
-                </select>
-            </label>
-            <button type="submit">Register Player</button>
-        </form>
+        <section class="info-grid" aria-label="Contact and payment information">
+            <article class="info-card">
+                <h2>Contact the academy</h2>
+                <p class="card-intro">Call Arif or Krishna for enquiries.</p>
+                <div class="contact-list">
+                    <a class="contact-link" href="tel:+919353196159">
+                        <span class="contact-name">Arif</span>
+                        <span class="contact-number">9353196159</span>
+                    </a>
+                    <a class="contact-link" href="tel:+919886716662">
+                        <span class="contact-name">Krishna</span>
+                        <span class="contact-number">9886716662</span>
+                    </a>
+                </div>
+            </article>
 
-        <p id="status" role="status" aria-live="polite"></p>
+            <article class="info-card">
+                <h2>PhonePe / GPay</h2>
+                <p class="card-intro">Use either academy contact number to make a payment.</p>
+                <p class="payment-note"><strong>Arif</strong><br>9353196159</p>
+                <p class="payment-note"><strong>Krishna</strong><br>9886716662</p>
+            </article>
+        </section>
+        <section class="upcoming-events" aria-labelledby="upcoming-events-title">
+            <h2 id="upcoming-events-title">Upcoming Events</h2>
+            <ul class="events-list">
+                <li>
+                    <a class="event-link" href="registration.html">
+                        <strong>SportsLab Baddy Tournament</strong>
+                        <span class="event-action">Register / View Registered Players &rarr;</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
 
-        <h2>Registered Players</h2>
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Category</th>
-                    </tr>
-                </thead>
-                <tbody id="registrations"></tbody>
-            </table>
-        </div>
+        <footer>Aurafit Badminton Academy · Train with purpose. Play with passion.</footer>
     </main>
-
-    <script>
-        const form = document.getElementById('registration-form');
-        const registrationsTable = document.getElementById('registrations');
-        const statusMessage = document.getElementById('status');
-        const storageKey = 'badmintonTournamentRegistrations';
-
-        function loadRegistrations() {
-            try {
-                const savedRegistrations = JSON.parse(localStorage.getItem(storageKey) || '[]');
-                return Array.isArray(savedRegistrations) ? savedRegistrations : [];
-            } catch (error) {
-                statusMessage.textContent = 'Could not load saved registrations from this browser.';
-                return [];
-            }
-        }
-
-        function renderRegistrations(registrations) {
-            registrationsTable.replaceChildren();
-
-            registrations.forEach((registration) => {
-                const row = document.createElement('tr');
-                [registration.name, registration.age, registration.category].forEach((value) => {
-                    const cell = document.createElement('td');
-                    cell.textContent = value;
-                    row.appendChild(cell);
-                });
-                registrationsTable.appendChild(row);
-            });
-        }
-
-        let registrations = loadRegistrations();
-        renderRegistrations(registrations);
-
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            if (!form.reportValidity()) {
-                return;
-            }
-
-            const formData = new FormData(form);
-            const registration = {
-                name: formData.get('name').trim(),
-                age: Number(formData.get('age')),
-                category: formData.get('category')
-            };
-
-            if (!registration.name) {
-                statusMessage.textContent = 'Please enter the player name.';
-                return;
-            }
-
-            registrations.push(registration);
-            try {
-                localStorage.setItem(storageKey, JSON.stringify(registrations));
-            } catch (error) {
-                registrations.pop();
-                statusMessage.textContent = 'Registration could not be saved in this browser.';
-                return;
-            }
-
-            renderRegistrations(registrations);
-            form.reset();
-            statusMessage.textContent = `${registration.name} has been registered.`;
-        });
-    </script>
 </body>
 </html>

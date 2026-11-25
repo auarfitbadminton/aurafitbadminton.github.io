@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102e28">
+    <title>SportsLab Baddy Tournament | Aurafit Badminton Academy</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Arial, sans-serif;
+            color: #182b26;
+            background: #f3f6ef;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 28px 18px 48px;
+            background: radial-gradient(circle at 90% 8%, #e1edbd 0, transparent 26%), #f3f6ef;
+        }
+
+        main {
+            width: min(100%, 900px);
+            margin: 0 auto;
+        }
+
+        .hero {
+            padding: clamp(28px, 6vw, 56px);
+            color: #fff;
+            background: linear-gradient(125deg, #102e28 0%, #174e3c 68%, #26704b 100%);
+            border-radius: 24px;
+            box-shadow: 0 22px 55px rgba(20, 57, 42, 0.18);
+        }
+
+        .eyebrow {
+            margin: 0 0 14px;
+            color: #d7ed87;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 6vw, 3.6rem);
+            letter-spacing: -0.05em;
+        }
+
+        .hero p:last-child {
+            margin: 14px 0 0;
+            color: #d9e8dc;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 22px 0;
+            color: #31523a;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .registration-card {
+            padding: clamp(22px, 5vw, 40px);
+            background: #fff;
+            border: 1px solid #e5e9dd;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(27, 55, 39, 0.06);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin: 0 0 24px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e8eee5;
+        }
+
+        button {
+            min-height: 46px;
+            padding: 10px 16px;
+            border: 0;
+            border-radius: 9px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .tab-button {
+            color: #52675a;
+            background: transparent;
+        }
+
+        .tab-button[aria-selected="true"] {
+            color: #173324;
+            background: #eaf2d5;
+        }
+
+        .tab-panel[hidden] {
+            display: none;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            align-items: end;
+        }
+
+        label {
+            display: grid;
+            gap: 8px;
+            color: #354c3c;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        input,
+        select {
+            width: 100%;
+            min-height: 48px;
+            padding: 11px 13px;
+            color: #182b26;
+            background: #fbfcf9;
+            border: 1px solid #d5dfd2;
+            border-radius: 10px;
+            font: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #b8d76c;
+            outline-offset: 3px;
+        }
+
+        .submit-button,
+        #export-registrations {
+            color: #173324;
+            background: #d7ed87;
+            transition: background 150ms ease;
+        }
+
+        .submit-button:hover,
+        #export-registrations:hover {
+            background: #c8e36a;
+        }
+
+        .submit-button {
+            grid-column: 1 / -1;
+            justify-self: start;
+            padding-inline: 20px;
+        }
+
+        #status {
+            min-height: 1.5em;
+            margin: 14px 0 0;
+            color: #26704b;
+        }
+
+        .panel-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 14px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #e8eee5;
+        }
+
+        th {
+            color: #42634c;
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        footer {
+            padding: 24px 12px 0;
+            color: #68776a;
+            font-size: 0.88rem;
+            text-align: center;
+        }
+
+        @media (max-width: 560px) {
+            body {
+                padding: 14px 12px 30px;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .submit-button {
+                grid-column: auto;
+            }
+
+            .tabs {
+                gap: 2px;
+            }
+
+            .tab-button {
+                padding-inline: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <header class="hero">
+            <p class="eyebrow">Aurafit Badminton Academy</p>
+            <h1>SportsLab Baddy Tournament</h1>
+            <p>Register a player or view the registered players for this event.</p>
+        </header>
+
+        <a class="back-link" href="index.html">&larr; Back to academy home</a>
+
+        <section class="registration-card" aria-label="Tournament registration and players">
+            <div class="tabs" role="tablist" aria-label="Tournament sections">
+                <button class="tab-button" id="register-tab" type="button" role="tab" aria-selected="true" aria-controls="register-panel">Registration</button>
+                <button class="tab-button" id="players-tab" type="button" role="tab" aria-selected="false" aria-controls="players-panel" tabindex="-1">Registered Players</button>
+            </div>
+
+            <section class="tab-panel" id="register-panel" role="tabpanel" aria-labelledby="register-tab">
+                <form id="registration-form">
+                    <label for="player-name">
+                        Name
+                        <input id="player-name" name="name" type="text" maxlength="80" autocomplete="name" required>
+                    </label>
+                    <label for="player-age">
+                        Age
+                        <input id="player-age" name="age" type="number" min="5" max="100" required>
+                    </label>
+                    <label for="player-category">
+                        Category
+                        <select id="player-category" name="category" required>
+                            <option value="" disabled selected>Select category</option>
+                            <option value="Under 12">Under 12</option>
+                            <option value="Under 15">Under 15</option>
+                            <option value="Under 18">Under 18</option>
+                            <option value="Open">Open</option>
+                        </select>
+                    </label>
+                    <label for="payment-transaction-id">
+                        PhonePe / GPay Transaction ID
+                        <input id="payment-transaction-id" name="transactionId" type="text" maxlength="100" autocomplete="off" required>
+                    </label>
+                    <button class="submit-button" type="submit">Register Player</button>
+                </form>
+            </section>
+
+            <section class="tab-panel" id="players-panel" role="tabpanel" aria-labelledby="players-tab" hidden>
+                <div class="panel-actions">
+                    <button id="export-registrations" type="button">Download Excel CSV</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Category</th>
+                                <th>PhonePe / GPay Transaction ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrations"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <p id="status" role="status" aria-live="polite"></p>
+        </section>
+        <footer>Aurafit Badminton Academy · Train with purpose. Play with passion.</footer>
+    </main>
+
+    <script>
+        const form = document.getElementById('registration-form');
+        const registrationsTable = document.getElementById('registrations');
+        const statusMessage = document.getElementById('status');
+        const registerTab = document.getElementById('register-tab');
+        const playersTab = document.getElementById('players-tab');
+        const registerPanel = document.getElementById('register-panel');
+        const playersPanel = document.getElementById('players-panel');
+        const exportButton = document.getElementById('export-registrations');
+        const storageKey = 'badmintonTournamentRegistrations';
+
+        function loadRegistrations() {
+            try {
+                const savedRegistrations = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                return Array.isArray(savedRegistrations) ? savedRegistrations : [];
+            } catch (error) {
+                statusMessage.textContent = 'Could not load saved registrations from this browser.';
+                return [];
+            }
+        }
+
+        function renderRegistrations(registrations) {
+            registrationsTable.replaceChildren();
+
+            registrations.forEach((registration) => {
+                const row = document.createElement('tr');
+                [registration.name, registration.age, registration.category, registration.transactionId || ''].forEach((value) => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                registrationsTable.appendChild(row);
+            });
+        }
+
+        function showTab(selectedTab) {
+            const showRegistration = selectedTab === registerTab;
+            registerTab.setAttribute('aria-selected', String(showRegistration));
+            registerTab.tabIndex = showRegistration ? 0 : -1;
+            registerPanel.hidden = !showRegistration;
+            playersTab.setAttribute('aria-selected', String(!showRegistration));
+            playersTab.tabIndex = showRegistration ? -1 : 0;
+            playersPanel.hidden = showRegistration;
+        }
+
+        [registerTab, playersTab].forEach((tab) => {
+            tab.addEventListener('click', () => showTab(tab));
+            tab.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'Home' || event.key === 'End') {
+                    event.preventDefault();
+                    const nextTab = event.key === 'Home' || event.key === 'ArrowLeft' ? registerTab : playersTab;
+                    showTab(nextTab);
+                    nextTab.focus();
+                }
+            });
+        });
+
+        function csvCell(value) {
+            const text = String(value === null || value === undefined ? '' : value);
+            const safeText = /^[\t\r ]*[=+\-@]/.test(text) ? `'${text}` : text;
+            return `"${safeText.replace(/"/g, '""')}"`;
+        }
+
+        function downloadRegistrations() {
+            const rows = [
+                ['Name', 'Age', 'Category', 'PhonePe / GPay Transaction ID'],
+                ...registrations.map((registration) => [
+                    registration.name,
+                    registration.age,
+                    registration.category,
+                    registration.transactionId || ''
+                ])
+            ];
+            const csv = '\uFEFF' + rows.map((row) => row.map(csvCell).join(',')).join('\r\n');
+            const file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(file);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'aurafit-registered-players.csv';
+            link.click();
+            URL.revokeObjectURL(url);
+            statusMessage.textContent = 'Excel-compatible registrations CSV downloaded.';
+        }
+
+        let registrations = loadRegistrations();
+        renderRegistrations(registrations);
+
+        exportButton.addEventListener('click', downloadRegistrations);
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            const formData = new FormData(form);
+            const registration = {
+                name: String(formData.get('name') || '').trim(),
+                age: Number(formData.get('age')),
+                category: String(formData.get('category') || ''),
+                transactionId: String(formData.get('transactionId') || '').trim()
+            };
+
+            if (!registration.name) {
+                statusMessage.textContent = 'Please enter the player name.';
+                return;
+            }
+
+            if (!registration.transactionId) {
+                statusMessage.textContent = 'Please enter the PhonePe / GPay transaction ID.';
+                return;
+            }
+
+            registrations.push(registration);
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(registrations));
+            } catch (error) {
+                registrations.pop();
+                statusMessage.textContent = 'Registration could not be saved in this browser.';
+                return;
+            }
+
+            renderRegistrations(registrations);
+            form.reset();
+            statusMessage.textContent = `${registration.name} has been registered.`;
+        });
+    </script>
+</body>
+</html>
