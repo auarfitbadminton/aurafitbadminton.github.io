@@ -274,7 +274,7 @@
 
             <section class="tab-panel" id="players-panel" role="tabpanel" aria-labelledby="players-tab" hidden>
                 <div class="panel-actions">
-                    <button id="export-registrations" type="button">Download Excel CSV</button>
+                    <button id="export-registrations" type="button" disabled>Download Excel CSV</button>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -283,7 +283,6 @@
                                 <th>Name</th>
                                 <th>Age</th>
                                 <th>Category</th>
-                                <th>PhonePe / GPay Transaction ID</th>
                             </tr>
                         </thead>
                         <tbody id="registrations"></tbody>
@@ -291,7 +290,7 @@
                 </div>
             </section>
 
-            <p id="status" role="status" aria-live="polite"></p>
+            <p id="status" role="status" aria-live="polite">Registrations are stored in this browser on this device only.</p>
         </section>
         <footer>Aurafit Badminton Academy · Train with purpose. Play with passion.</footer>
     </main>
@@ -307,28 +306,18 @@
         const exportButton = document.getElementById('export-registrations');
         const storageKey = 'badmintonTournamentRegistrations';
 
-        function loadRegistrations() {
-            try {
-                const savedRegistrations = JSON.parse(localStorage.getItem(storageKey) || '[]');
-                return Array.isArray(savedRegistrations) ? savedRegistrations : [];
-            } catch (error) {
-                statusMessage.textContent = 'Could not load saved registrations from this browser.';
-                return [];
-            }
-        }
-
-        function renderRegistrations(registrations) {
+        function renderRegistrations() {
             registrationsTable.replaceChildren();
-
             registrations.forEach((registration) => {
                 const row = document.createElement('tr');
-                [registration.name, registration.age, registration.category, registration.transactionId || ''].forEach((value) => {
+                [registration.name, registration.age, registration.category].forEach((value) => {
                     const cell = document.createElement('td');
                     cell.textContent = value;
                     row.appendChild(cell);
                 });
                 registrationsTable.appendChild(row);
             });
+            exportButton.disabled = registrations.length === 0;
         }
 
         function showTab(selectedTab) {
@@ -361,13 +350,8 @@
 
         function downloadRegistrations() {
             const rows = [
-                ['Name', 'Age', 'Category', 'PhonePe / GPay Transaction ID'],
-                ...registrations.map((registration) => [
-                    registration.name,
-                    registration.age,
-                    registration.category,
-                    registration.transactionId || ''
-                ])
+                ['Name', 'Age', 'Category'],
+                ...registrations.map((registration) => [registration.name, registration.age, registration.category])
             ];
             const csv = '\uFEFF' + rows.map((row) => row.map(csvCell).join(',')).join('\r\n');
             const file = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -377,17 +361,28 @@
             link.download = 'aurafit-registered-players.csv';
             link.click();
             URL.revokeObjectURL(url);
-            statusMessage.textContent = 'Excel-compatible registrations CSV downloaded.';
+            statusMessage.textContent = 'Players list CSV downloaded. Payment transaction IDs are not included.';
         }
 
-        let registrations = loadRegistrations();
-        renderRegistrations(registrations);
+        function loadRegistrations() {
+            try {
+                const savedRegistrations = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                if (!Array.isArray(savedRegistrations)) {
+                    throw new Error('Saved registrations have an invalid format.');
+                }
+                registrations = savedRegistrations;
+                renderRegistrations();
+                statusMessage.textContent = `Registrations are stored in this browser on this device only. ${registrations.length} player${registrations.length === 1 ? '' : 's'} saved.`;
+            } catch (error) {
+                console.error('Could not load saved registrations:', error);
+                statusMessage.textContent = 'Could not load saved registrations from this browser.';
+            }
+        }
 
         exportButton.addEventListener('click', downloadRegistrations);
 
         form.addEventListener('submit', (event) => {
             event.preventDefault();
-
             if (!form.reportValidity()) {
                 return;
             }
@@ -399,14 +394,8 @@
                 category: String(formData.get('category') || ''),
                 transactionId: String(formData.get('transactionId') || '').trim()
             };
-
-            if (!registration.name) {
-                statusMessage.textContent = 'Please enter the player name.';
-                return;
-            }
-
-            if (!registration.transactionId) {
-                statusMessage.textContent = 'Please enter the PhonePe / GPay transaction ID.';
+            if (!registration.name || !registration.transactionId) {
+                statusMessage.textContent = 'Enter the player name and payment transaction ID.';
                 return;
             }
 
@@ -415,14 +404,17 @@
                 localStorage.setItem(storageKey, JSON.stringify(registrations));
             } catch (error) {
                 registrations.pop();
+                console.error('Could not save registration:', error);
                 statusMessage.textContent = 'Registration could not be saved in this browser.';
                 return;
             }
 
-            renderRegistrations(registrations);
+            renderRegistrations();
             form.reset();
-            statusMessage.textContent = `${registration.name} has been registered.`;
+            statusMessage.textContent = `${registration.name} has been registered on this device.`;
         });
+
+        loadRegistrations();
     </script>
 </body>
 </html>
