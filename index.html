@@ -1,18 +1,217 @@
-<title>
-    AuraFit Badminton coaching and Academy
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraFit Badminton coaching and Academy</title>
+    <title>Badminton Tournament Registration</title>
     <style>
-        body {
+        :root {
+            color-scheme: light;
             font-family: Arial, sans-serif;
+            color: #17231c;
+            background: #f2f7f2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
             margin: 0;
-            padding: 0;
-            text-align: center;
-            background-color: #f00;
+            padding: 32px 16px;
+        }
+
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 28px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(20, 50, 30, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #176b3a;
+        }
+
+        form {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            align-items: end;
+        }
+
+        label {
+            display: grid;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        input,
+        select,
+        button {
+            min-height: 42px;
+            padding: 9px 10px;
+            border: 1px solid #b8c8bc;
+            border-radius: 6px;
+            font: inherit;
+        }
+
+        button {
+            border: 0;
+            color: #fff;
+            background: #176b3a;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #10552d;
+        }
+
+        #status {
+            min-height: 1.5em;
+            margin: 14px 0;
+            color: #176b3a;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 11px 8px;
+            border-bottom: 1px solid #e1e9e2;
+        }
+
+        th {
+            color: #176b3a;
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding: 20px 16px;
+            }
         }
     </style>
-    <h1>AuraFit Badminton coaching and Academy</h1>
-    <p>AuraFit Badminton coaching and Academy Description Here</p>
-    <a href="https://aurafitbadminton.github.io/your-web-application-url/your-web-application-title.html">Visit Your Web Application</a>{\rtf1}
-</title>
+</head>
+<body>
+    <main>
+        <h1>Badminton Tournament Registration</h1>
+        <p>Register a player by entering their name, age, and tournament category.</p>
+
+        <form id="registration-form">
+            <label for="player-name">
+                Name
+                <input id="player-name" name="name" type="text" maxlength="80" autocomplete="name" required>
+            </label>
+            <label for="player-age">
+                Age
+                <input id="player-age" name="age" type="number" min="5" max="100" required>
+            </label>
+            <label for="player-category">
+                Category
+                <select id="player-category" name="category" required>
+                    <option value="" disabled selected>Select category</option>
+                    <option value="Under 12">Under 12</option>
+                    <option value="Under 15">Under 15</option>
+                    <option value="Under 18">Under 18</option>
+                    <option value="Open">Open</option>
+                </select>
+            </label>
+            <button type="submit">Register Player</button>
+        </form>
+
+        <p id="status" role="status" aria-live="polite"></p>
+
+        <h2>Registered Players</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody id="registrations"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        const form = document.getElementById('registration-form');
+        const registrationsTable = document.getElementById('registrations');
+        const statusMessage = document.getElementById('status');
+        const storageKey = 'badmintonTournamentRegistrations';
+
+        function loadRegistrations() {
+            try {
+                const savedRegistrations = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                return Array.isArray(savedRegistrations) ? savedRegistrations : [];
+            } catch (error) {
+                statusMessage.textContent = 'Could not load saved registrations from this browser.';
+                return [];
+            }
+        }
+
+        function renderRegistrations(registrations) {
+            registrationsTable.replaceChildren();
+
+            registrations.forEach((registration) => {
+                const row = document.createElement('tr');
+                [registration.name, registration.age, registration.category].forEach((value) => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                registrationsTable.appendChild(row);
+            });
+        }
+
+        let registrations = loadRegistrations();
+        renderRegistrations(registrations);
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            const formData = new FormData(form);
+            const registration = {
+                name: formData.get('name').trim(),
+                age: Number(formData.get('age')),
+                category: formData.get('category')
+            };
+
+            if (!registration.name) {
+                statusMessage.textContent = 'Please enter the player name.';
+                return;
+            }
+
+            registrations.push(registration);
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(registrations));
+            } catch (error) {
+                registrations.pop();
+                statusMessage.textContent = 'Registration could not be saved in this browser.';
+                return;
+            }
+
+            renderRegistrations(registrations);
+            form.reset();
+            statusMessage.textContent = `${registration.name} has been registered.`;
+        });
+    </script>
+</body>
+</html>
